@@ -45,15 +45,15 @@ namespace LearningCSharpOffline
                        var Response =  PasswordChecker.CheckPassword(userInput);
                         if (!Response.passwordContainsLowerCase || !Response.passwordContainsNumber || !Response.passwordContainsUpperCase)
                         {
-
+                            
                             Console.WriteLine("Evaluation Complete");
-                            Console.WriteLine("All error messages:  *" + Response.ErrorMessages[0] +", * "+ Response.ErrorMessages[1] + ",  *"+ Response.ErrorMessages[2]);
+                            Console.WriteLine("All error messages:  *" + Response.GetErrorMessages()[0] +", * "+ Response.GetErrorMessages()[1] + ",  *"+ Response.GetErrorMessages()[2]);
                             isUserInSession = false;
                         }
                         else
                         {
                             Console.WriteLine("Evaluation Complete");
-                            Console.WriteLine(Response.SuccessMessage);
+                            Console.WriteLine(Response.GetSuccessMessage());
                             isUserInSession = false;
                         }
                     }
