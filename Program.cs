@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Timers;
-using LearningCSharpOffline.Math;
+//using System.Timers;
+using LearningCSharpOffline.Utils;
 
 
 namespace LearningCSharpOffline
@@ -17,13 +17,6 @@ namespace LearningCSharpOffline
 
             while (isUserInSession)
             {
-                var error = 0;
-                var passwordContainsLowerCase = false;
-                var passwordContainsUpperCase = false;
-                var passwordContainsNumber = false;
-
-
-                
                 Console.WriteLine("Welcome To Password Checker v.1 ");
                 Console.WriteLine(" your number one tool for checking password integrity and strength");
                 Console.Write(" Type In a Password: ");
@@ -40,72 +33,28 @@ namespace LearningCSharpOffline
                 }
                 else
                 {
-                    Console.WriteLine("Pasword Recorded.... Evaluating!!!");
+                    Console.WriteLine("Pasword Recorded. Now Evaluating...");
                     if (userInput.Length < 8)
                     {
-                        string message =  "Errors Detected : ";
-                        error += 1;
-                        Console.WriteLine(message + error  + " => Password Must be 8 characters or Longer!!");
+                        string message =  "Error: ";
+                       
+                        Console.WriteLine(message  + " Password Must be 8 characters or Longer!!");
                         isUserInSession = false;
                     }else {
-                        
-                        //the string must contain at least one number
-                        // must contain at least at least one upper case 
-                        // must Contain at least one lower case
-                        /*
-                         *algorithm
-                         * iterate through each character in the string
-                         * if one character is already lower case, 
-                         */
-                        foreach(var instance in userInput)
+
+                       var Response =  PasswordChecker.CheckPassword(userInput);
+                        if (!Response.passwordContainsLowerCase || !Response.passwordContainsNumber || !Response.passwordContainsUpperCase)
                         {
-                            
-                          if (instance.GetType() == typeof(char) && char.IsLower(instance))
-                           {
-                                    passwordContainsLowerCase = true;
-                                    continue;
-                            }
 
-                            if (instance.GetType()== typeof(char) && char.IsUpper(instance))
-                            {
-                                passwordContainsUpperCase = true;
-                                continue;
-                            }
-
-
-                            if (instance.GetType() == typeof(char) && char.IsDigit(instance))
-                            {
-                                passwordContainsNumber = true;
-                            }                          
-
-                        }
-                        
-                        if(passwordContainsLowerCase && passwordContainsNumber && passwordContainsUpperCase)
-                        {
-                            Console.WriteLine("Congratulations!! your password has passed the tests and can be used");
+                            Console.WriteLine("Evaluation Complete");
+                            Console.WriteLine("All error messages:  *" + Response.ErrorMessages[0] +", * "+ Response.ErrorMessages[1] + ",  *"+ Response.ErrorMessages[2]);
                             isUserInSession = false;
                         }
                         else
                         {
-                            string message = "Errors Detected : ";
-
-                            if (!passwordContainsUpperCase)
-                            {
-                                error += 1;
-                                Console.WriteLine(message + error   + " => Password must contain at least one upper case character");
-                                isUserInSession = false;
-                            }  if(!passwordContainsLowerCase){
-                                error += 1;
-                                Console.WriteLine(message + error +   " => Password must contain at least one lower case character");
-                                isUserInSession = false;
-                            }
-                             if (!passwordContainsNumber)
-                            {
-                                error += 1;
-                                Console.WriteLine(message + error + "=> Password must contain at least one digit");
-                                isUserInSession = false;
-                            }
-                            Console.WriteLine("Total number of Errors: " + error);
+                            Console.WriteLine("Evaluation Complete");
+                            Console.WriteLine(Response.SuccessMessage);
+                            isUserInSession = false;
                         }
                     }
 
